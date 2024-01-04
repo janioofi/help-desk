@@ -1,20 +1,40 @@
 package com.janioofi.helpdesk.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.janioofi.helpdesk.domain.enums.Perfil;
+import org.hibernate.validator.constraints.br.CPF;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class Pessoa {
+@Entity(name = "tb_pessoa")
+public abstract class Pessoa implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id_pessoa;
     protected String nome;
+
+    @CPF
+    @Column(unique = true)
     protected String cpf;
+
+    @Email
+    @Column(unique = true)
     protected String email;
     protected String senha;
+
+    @ElementCollection(fetch = FetchType.EAGER)
     protected Set<Integer> perfis = new HashSet<>();
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
     protected LocalDate dateCriacao = LocalDate.now();
 
     public Pessoa() {
