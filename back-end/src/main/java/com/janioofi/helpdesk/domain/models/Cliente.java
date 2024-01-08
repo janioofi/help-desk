@@ -1,11 +1,10 @@
-package com.janioofi.helpdesk.domain;
+package com.janioofi.helpdesk.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.janioofi.helpdesk.domain.enums.Perfil;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

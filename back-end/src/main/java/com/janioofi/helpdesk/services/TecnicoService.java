@@ -1,6 +1,6 @@
 package com.janioofi.helpdesk.services;
 
-import com.janioofi.helpdesk.domain.Tecnico;
+import com.janioofi.helpdesk.domain.models.Tecnico;
 import com.janioofi.helpdesk.repositories.TecnicoRepository;
 import org.springframework.stereotype.Service;
 

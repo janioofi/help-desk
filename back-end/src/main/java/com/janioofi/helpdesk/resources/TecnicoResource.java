@@ -1,6 +1,6 @@
 package com.janioofi.helpdesk.resources;
 
-import com.janioofi.helpdesk.domain.Tecnico;
+import com.janioofi.helpdesk.domain.models.Tecnico;
 import com.janioofi.helpdesk.services.TecnicoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

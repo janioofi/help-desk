@@ -1,7 +1,6 @@
 package com.janioofi.helpdesk.repositories;
 
-import com.janioofi.helpdesk.domain.Chamado;
-import com.janioofi.helpdesk.domain.Tecnico;
+import com.janioofi.helpdesk.domain.models.Chamado;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChamadoRepository extends JpaRepository<Chamado, Integer> {

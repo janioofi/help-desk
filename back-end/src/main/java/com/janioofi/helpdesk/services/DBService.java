@@ -1,8 +1,8 @@
 package com.janioofi.helpdesk.services;
 
-import com.janioofi.helpdesk.domain.Chamado;
-import com.janioofi.helpdesk.domain.Cliente;
-import com.janioofi.helpdesk.domain.Tecnico;
+import com.janioofi.helpdesk.domain.models.Chamado;
+import com.janioofi.helpdesk.domain.models.Cliente;
+import com.janioofi.helpdesk.domain.models.Tecnico;
 import com.janioofi.helpdesk.domain.enums.Perfil;
 import com.janioofi.helpdesk.domain.enums.Prioridade;
 import com.janioofi.helpdesk.domain.enums.Status;
