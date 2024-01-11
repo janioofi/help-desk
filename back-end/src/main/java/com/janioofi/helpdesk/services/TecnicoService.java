@@ -1,5 +1,6 @@
 package com.janioofi.helpdesk.services;
 
+import com.janioofi.helpdesk.domain.dtos.TecnicoDTO;
 import com.janioofi.helpdesk.domain.models.Tecnico;
 import com.janioofi.helpdesk.exceptions.RecordNotFoundException;
 import com.janioofi.helpdesk.repositories.TecnicoRepository;
@@ -23,5 +24,10 @@ public class TecnicoService {
 
     public List<Tecnico> findAll(){
         return repository.findAll();
+    }
+
+    public Tecnico create(TecnicoDTO data){
+        Tecnico tecnico = new Tecnico(data);
+        return repository.save(tecnico);
     }
 }

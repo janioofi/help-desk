@@ -1,12 +1,14 @@
 package com.janioofi.helpdesk.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.janioofi.helpdesk.domain.dtos.TecnicoDTO;
 import com.janioofi.helpdesk.domain.enums.Perfil;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Tecnico extends Pessoa{
@@ -18,6 +20,16 @@ public class Tecnico extends Pessoa{
 
     public Tecnico() {
         super();
+        addPefil(Perfil.TECNICO);
+    }
+
+    public Tecnico(TecnicoDTO obj) {
+        this.nome = obj.getNome();
+        this.cpf = obj.getCpf();
+        this.email = obj.getEmail();
+        this.senha = obj.getSenha();
+        this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
+        this.dateCriacao = obj.getDateCriacao();
         addPefil(Perfil.TECNICO);
     }
 
