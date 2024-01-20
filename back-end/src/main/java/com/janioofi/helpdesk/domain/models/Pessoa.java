@@ -6,6 +6,8 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -20,15 +22,25 @@ public abstract class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id_pessoa;
+
+    @NotNull(message = "Campo NOME não pode ser nulo")
+    @NotEmpty(message = "Campo NOME pode estar em branco")
     protected String nome;
 
     @CPF
+    @NotNull(message = "Campo CPF não pode ser nulo")
+    @NotEmpty(message = "Campo CPF não pode estar em branco")
     @Column(unique = true)
     protected String cpf;
 
     @Email
+    @NotNull(message = "Campo EMAIL não pode ser nulo")
+    @NotEmpty(message = "Campo EMAIL não pode estar em branco")
     @Column(unique = true)
     protected String email;
+
+    @NotNull(message = "Campo SENHA não pode ser nulo")
+    @NotEmpty(message = "Campo SENHA não pode estar em branco")
     protected String senha;
 
     @ElementCollection(fetch = FetchType.EAGER)

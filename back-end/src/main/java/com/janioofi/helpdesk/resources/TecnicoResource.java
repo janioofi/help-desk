@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class TecnicoResource {
     }
 
     @PostMapping
-    public ResponseEntity<Tecnico> create(@RequestBody TecnicoDTO tecnico){
+    public ResponseEntity<Tecnico> create(@Valid @RequestBody TecnicoDTO tecnico){
         Tecnico data = service.create(tecnico);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(data.getId_pessoa()).toUri();
         return ResponseEntity.created(uri).body(data);
