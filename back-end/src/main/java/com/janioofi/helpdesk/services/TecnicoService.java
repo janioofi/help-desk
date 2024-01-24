@@ -8,6 +8,7 @@ import com.janioofi.helpdesk.repositories.PessoaRepository;
 import com.janioofi.helpdesk.repositories.TecnicoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,6 +47,14 @@ public class TecnicoService {
         oldObj.setSenha(tecnico.getSenha());
         oldObj.setNome(tecnico.getNome());
         return repository.save(oldObj);
+    }
+
+    public void deleteById(Integer id){
+        Tecnico obj = findById(id);
+        if(!obj.getChamados().isEmpty()){
+            throw new DataIntegrityViolationException("Técnico possui ordens de serviço e não pode ser deletado!");
+        }
+        repository.deleteById(id);
     }
 
     private void validaEmailECpf(TecnicoDTO data){

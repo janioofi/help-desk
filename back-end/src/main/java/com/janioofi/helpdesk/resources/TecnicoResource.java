@@ -42,4 +42,10 @@ public class TecnicoResource {
     public ResponseEntity<Tecnico> update(@PathVariable Integer id, @Valid @RequestBody TecnicoDTO tecnico){
         return ResponseEntity.status(HttpStatus.OK).body(service.update(id, tecnico));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Integer id){
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
