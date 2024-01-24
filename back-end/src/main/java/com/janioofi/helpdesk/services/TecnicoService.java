@@ -6,12 +6,15 @@ import com.janioofi.helpdesk.exceptions.BusinessRuntimeException;
 import com.janioofi.helpdesk.exceptions.RecordNotFoundException;
 import com.janioofi.helpdesk.repositories.PessoaRepository;
 import com.janioofi.helpdesk.repositories.TecnicoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class TecnicoService {
+    private final Logger logger = LoggerFactory.getLogger(TecnicoService.class);
     private final TecnicoRepository repository;
     private final PessoaRepository pessoaRepository;
 
@@ -29,14 +32,33 @@ public class TecnicoService {
     }
 
     public Tecnico create(TecnicoDTO data){
+        validaEmailECpf(data);
+        Tecnico tecnico = new Tecnico(data);
+        return repository.save(tecnico);
+    }
+
+    public Tecnico update(Integer id, TecnicoDTO tecnico){
+        Tecnico oldObj = findById(id);
+        validaEmailECpf(tecnico);
+        if(verificaEmail(tecnico)){
+            oldObj.setEmail(tecnico.getEmail());
+        }
+        oldObj.setSenha(tecnico.getSenha());
+        oldObj.setNome(tecnico.getNome());
+        return repository.save(oldObj);
+    }
+
+    private void validaEmailECpf(TecnicoDTO data){
         if(pessoaRepository.findByCpf(data.getCpf()).isPresent()){
             throw new BusinessRuntimeException("Já existe um cadastro com esse cpf!");
-        }else if(pessoaRepository.findByEmail(data.getEmail()).isPresent()){
+        }
+        if(pessoaRepository.findByEmail(data.getEmail()).isPresent()){
             throw new BusinessRuntimeException("Já existe um cadastro com esse email!");
         }
-        else{
-            Tecnico tecnico = new Tecnico(data);
-            return repository.save(tecnico);
-        }
     }
+
+    private Boolean verificaEmail(TecnicoDTO data){
+        return pessoaRepository.findByEmail(data.getEmail()).isEmpty();
+    }
+
 }

@@ -3,6 +3,7 @@ package com.janioofi.helpdesk.resources;
 import com.janioofi.helpdesk.domain.dtos.TecnicoDTO;
 import com.janioofi.helpdesk.domain.models.Tecnico;
 import com.janioofi.helpdesk.services.TecnicoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,5 +36,10 @@ public class TecnicoResource {
         Tecnico data = service.create(tecnico);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(data.getId_pessoa()).toUri();
         return ResponseEntity.created(uri).body(data);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Tecnico> update(@PathVariable Integer id, @Valid @RequestBody TecnicoDTO tecnico){
+        return ResponseEntity.status(HttpStatus.OK).body(service.update(id, tecnico));
     }
 }
