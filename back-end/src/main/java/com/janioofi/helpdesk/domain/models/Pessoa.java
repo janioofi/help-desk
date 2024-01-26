@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity(name = "tb_pessoa")
 public abstract class Pessoa implements Serializable {
@@ -44,14 +43,15 @@ public abstract class Pessoa implements Serializable {
     protected String senha;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    protected Set<Integer> perfis = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    protected Set<Perfil> perfis = new HashSet<>();
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     protected LocalDate dateCriacao = LocalDate.now();
 
     public Pessoa() {
         super();
-        addPefil(Perfil.CLIENTE);
+        addPerfil(Perfil.CLIENTE);
     }
 
     public Pessoa(Integer id_pessoa, String nome, String cpf, String email, String senha) {
@@ -60,7 +60,7 @@ public abstract class Pessoa implements Serializable {
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;
-        addPefil(Perfil.CLIENTE);
+        addPerfil(Perfil.CLIENTE);
     }
 
     public Integer getId_pessoa() {
@@ -104,11 +104,18 @@ public abstract class Pessoa implements Serializable {
     }
 
     public Set<Perfil> getPerfis() {
-        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+        return perfis;
     }
 
-    public void addPefil(Perfil perfil) {
-        this.perfis.add(perfil.getCodigo());
+    public void addPerfil(Perfil perfil) {
+        this.perfis.add(perfil);
+    }
+
+    public void setPerfis(Set<Perfil> perfis) {
+        for(var p : perfis){
+            this.perfis.add(p);
+        }
+        this.perfis = perfis;
     }
 
     public LocalDate getDateCriacao() {

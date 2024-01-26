@@ -1,13 +1,12 @@
 package com.janioofi.helpdesk.services;
 
-import com.janioofi.helpdesk.domain.dtos.TecnicoDTO;
+import com.janioofi.helpdesk.domain.dtos.ClienteDTO;
 import com.janioofi.helpdesk.domain.enums.Perfil;
 import com.janioofi.helpdesk.domain.models.Cliente;
-import com.janioofi.helpdesk.domain.models.Tecnico;
 import com.janioofi.helpdesk.exceptions.BusinessRuntimeException;
 import com.janioofi.helpdesk.exceptions.RecordNotFoundException;
+import com.janioofi.helpdesk.repositories.ClienteRepository;
 import com.janioofi.helpdesk.repositories.PessoaRepository;
-import com.janioofi.helpdesk.repositories.TecnicoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,45 +17,45 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class TecnicoService {
-    private final Logger logger = LoggerFactory.getLogger(TecnicoService.class);
-    private final TecnicoRepository repository;
+public class ClienteService {
+    private final Logger logger = LoggerFactory.getLogger(ClienteService.class);
+    private final ClienteRepository repository;
     private final PessoaRepository pessoaRepository;
 
-    public TecnicoService(TecnicoRepository repository, PessoaRepository pessoaRepository) {
+    public ClienteService(ClienteRepository repository, PessoaRepository pessoaRepository) {
         this.repository = repository;
         this.pessoaRepository = pessoaRepository;
     }
 
-    public Tecnico findById(Integer id){
-        return repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Nenhum tecnico encontrado com o id: " + id));
+    public Cliente findById(Integer id){
+        return repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Nenhum cliente encontrado com o id: " + id));
     }
 
-    public List<Tecnico> findAll(){
+    public List<Cliente> findAll(){
         return repository.findAll();
     }
 
-    public Tecnico create(TecnicoDTO data){
+    public Cliente create(ClienteDTO data){
         validaEmailECpf(data);
-        Tecnico tecnico = new Tecnico(data);
-        return repository.save(tecnico);
+        Cliente cliente = new Cliente(data);
+        return repository.save(cliente);
     }
 
-    public Tecnico update(Integer id, TecnicoDTO tecnico){
-        Tecnico oldObj = findById(id);
-        validaEmailECpf(tecnico);
-        if(!(tecnico.getEmail() == null) && verificaEmail(tecnico)){
-            oldObj.setEmail(tecnico.getEmail());
+    public Cliente update(Integer id, ClienteDTO cliente){
+        Cliente oldObj = findById(id);
+        validaEmailECpf(cliente);
+        if(!(cliente.getEmail() == null) && verificaEmail(cliente)){
+            oldObj.setEmail(cliente.getEmail());
         }
-        if(!(tecnico.getNome() == null)){
-            oldObj.setNome(tecnico.getNome());
+        if(!(cliente.getNome() == null)){
+            oldObj.setNome(cliente.getNome());
         }
-        if(!(tecnico.getSenha() == null)){
-            oldObj.setSenha(tecnico.getSenha());
+        if(!(cliente.getSenha() == null)){
+            oldObj.setSenha(cliente.getSenha());
         }
-        if(!tecnico.getPerfis().isEmpty()){
+        if(!cliente.getPerfis().isEmpty()){
             Set<Perfil> perfis = new HashSet<>();
-            for(Perfil p : tecnico.getPerfis()){
+            for(Perfil p : cliente.getPerfis()){
                 perfis.add(p);
             }
             oldObj.setPerfis(perfis);
@@ -65,14 +64,14 @@ public class TecnicoService {
     }
 
     public void deleteById(Integer id){
-        Tecnico obj = findById(id);
+        Cliente obj = findById(id);
         if(!obj.getChamados().isEmpty()){
-            throw new DataIntegrityViolationException("Técnico possui ordens de serviço e não pode ser deletado!");
+            throw new DataIntegrityViolationException("Cliente possui ordens de serviço e não pode ser deletado!");
         }
         repository.deleteById(id);
     }
 
-    private void validaEmailECpf(TecnicoDTO data){
+    private void validaEmailECpf(ClienteDTO data){
         if(pessoaRepository.findByCpf(data.getCpf()).isPresent()){
             throw new BusinessRuntimeException("Já existe um cadastro com esse cpf!");
         }
@@ -81,7 +80,7 @@ public class TecnicoService {
         }
     }
 
-    private Boolean verificaEmail(TecnicoDTO data){
+    private Boolean verificaEmail(ClienteDTO data){
         return pessoaRepository.findByEmail(data.getEmail()).isEmpty();
     }
 

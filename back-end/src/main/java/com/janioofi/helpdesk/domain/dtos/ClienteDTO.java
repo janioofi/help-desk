@@ -2,7 +2,7 @@ package com.janioofi.helpdesk.domain.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.janioofi.helpdesk.domain.enums.Perfil;
-import com.janioofi.helpdesk.domain.models.Tecnico;
+import com.janioofi.helpdesk.domain.models.Cliente;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class TecnicoDTO implements Serializable {
+public class ClienteDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     protected String nome;
@@ -21,12 +21,12 @@ public class TecnicoDTO implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy")
     protected LocalDate dateCriacao = LocalDate.now();
 
-    public TecnicoDTO() {
+    public ClienteDTO() {
         super();
         this.perfis = new HashSet<>(Perfil.CLIENTE.getCodigo());
     }
 
-    public TecnicoDTO(Tecnico obj) {
+    public ClienteDTO(Cliente obj) {
         this.nome = obj.getNome();
         this.cpf = obj.getCpf();
         this.email = obj.getEmail();
@@ -36,7 +36,7 @@ public class TecnicoDTO implements Serializable {
         this.dateCriacao = obj.getDateCriacao();
     }
 
-    public TecnicoDTO(String nome, String cpf, String email, String senha, Set<Perfil> perfis, LocalDate dateCriacao) {
+    public ClienteDTO(String nome, String cpf, String email, String senha, Set<Perfil> perfis, LocalDate dateCriacao) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
