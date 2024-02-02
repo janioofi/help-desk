@@ -3,6 +3,7 @@ package com.janioofi.helpdesk.domain.dtos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.janioofi.helpdesk.domain.models.Chamado;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class ChamadoDTO {
@@ -16,9 +17,10 @@ public class ChamadoDTO {
     private String status;
     private String titulo;
     private String observacoes;
+    private Integer id_cliente;
+    private Integer id_tecnico;
     private String tecnico;
     private String cliente;
-
     public ChamadoDTO() {
     }
 
@@ -32,6 +34,8 @@ public class ChamadoDTO {
         this.observacoes = obj.getObservacoes();
         this.tecnico = obj.getTecnico().getNome();
         this.cliente = obj.getCliente().getNome();
+        this.id_cliente = obj.getCliente().getId_pessoa();
+        this.id_tecnico = obj.getTecnico().getId_pessoa();
     }
 
     public Integer getId_chamado() {
@@ -104,5 +108,21 @@ public class ChamadoDTO {
 
     public void setCliente(String cliente) {
         this.cliente = cliente;
+    }
+
+    public Integer getId_cliente() {
+        return id_cliente;
+    }
+
+    public void setId_cliente(Integer id_cliente) {
+        this.id_cliente = id_cliente;
+    }
+
+    public Integer getId_tecnico() {
+        return id_tecnico;
+    }
+
+    public void setId_tecnico(Integer id_tecnico) {
+        this.id_tecnico = id_tecnico;
     }
 }

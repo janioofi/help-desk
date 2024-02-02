@@ -5,6 +5,8 @@ import com.janioofi.helpdesk.domain.enums.Prioridade;
 import com.janioofi.helpdesk.domain.enums.Status;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -22,17 +24,25 @@ public class Chamado implements Serializable {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataFechamento;
+    @NotNull(message = "Campo Prioridade não pode ser nulo")
+//    @NotEmpty(message = "Campo Prioridade não pode estar vazio")
     private Prioridade prioridade;
+    @NotNull(message = "Campo Status não pode ser nulo")
     private Status status;
+    @NotNull(message = "Campo Titulo não pode ser nulo")
     private String titulo;
+    @NotNull(message = "Campo Observações não pode ser nulo")
     private String observacoes;
 
     @ManyToOne
     @JoinColumn(name = "id_tecnico")
+    @NotNull(message = "Campo Tecnico não pode ser nulo")
+//    @NotEmpty(message = "Campo Tecnico não pode estar vazio")
     private Tecnico tecnico;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
+    @NotNull(message = "Campo Cliente não pode ser nulo")
     private Cliente cliente;
 
     public Chamado() {
