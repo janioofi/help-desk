@@ -1,6 +1,7 @@
 package com.janioofi.helpdesk.services;
 
 import com.janioofi.helpdesk.domain.dtos.ChamadoDTO;
+import com.janioofi.helpdesk.domain.enums.Perfil;
 import com.janioofi.helpdesk.domain.enums.Prioridade;
 import com.janioofi.helpdesk.domain.enums.Status;
 import com.janioofi.helpdesk.domain.models.Chamado;
@@ -10,6 +11,7 @@ import com.janioofi.helpdesk.exceptions.RecordNotFoundException;
 import com.janioofi.helpdesk.repositories.ChamadoRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +27,9 @@ public class ChamadoService {
         this.clienteService = clienteService;
     }
 
-    public ChamadoDTO findById(Integer id){
+    public Chamado findById(Integer id){
         Chamado obj = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Nenhum chamado encontrado com o id: " + id));
-        return new ChamadoDTO(obj);
+        return obj;
     }
 
     public List<ChamadoDTO> findAll(){
@@ -39,6 +41,13 @@ public class ChamadoService {
         return repository.save(newChamado(objDTO));
     }
 
+    public Chamado update(Integer id, ChamadoDTO objDTO) {
+        objDTO.setId_chamado(id);
+        Chamado oldObj;
+        oldObj = newChamado(objDTO);
+        return repository.save(oldObj);
+    }
+
     private Chamado newChamado(ChamadoDTO obj){
         Tecnico tecnico = tecnicoService.findById(obj.getId_tecnico());
         Cliente cliente = clienteService.findById(obj.getId_cliente());
@@ -47,6 +56,11 @@ public class ChamadoService {
         if(obj.getId_chamado() != null){
             chamado.setId_chamado(obj.getId_chamado());
         }
+
+        if(obj.getStatus().equals(Status.ENCERRADO.getDescricao())){
+            chamado.setDataFechamento(LocalDate.now());
+        }
+
         chamado.setCliente(cliente);
         chamado.setTecnico(tecnico);
         chamado.setPrioridade(Prioridade.valueOf(obj.getPrioridade()));

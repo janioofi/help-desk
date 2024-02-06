@@ -22,7 +22,7 @@ public class ChamadoResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ChamadoDTO> findById(@PathVariable Integer id){
+    public ResponseEntity<Chamado> findById(@PathVariable Integer id){
         return ResponseEntity.ok().body(service.findById(id));
     }
 
@@ -38,5 +38,11 @@ public class ChamadoResource {
                 .fromCurrentRequestUri().path("/{id}")
                 .buildAndExpand(obj.getId_chamado()).toUri();
         return ResponseEntity.created(uri).body(obj);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ChamadoDTO> update(@PathVariable Integer id,@Valid @RequestBody ChamadoDTO objDTO){
+        Chamado newObj = service.update(id, objDTO);
+        return ResponseEntity.ok().body(new ChamadoDTO(newObj));
     }
 }
