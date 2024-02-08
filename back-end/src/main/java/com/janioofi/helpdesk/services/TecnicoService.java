@@ -2,7 +2,6 @@ package com.janioofi.helpdesk.services;
 
 import com.janioofi.helpdesk.domain.dtos.TecnicoDTO;
 import com.janioofi.helpdesk.domain.enums.Perfil;
-import com.janioofi.helpdesk.domain.models.Cliente;
 import com.janioofi.helpdesk.domain.models.Tecnico;
 import com.janioofi.helpdesk.exceptions.BusinessRuntimeException;
 import com.janioofi.helpdesk.exceptions.RecordNotFoundException;
@@ -11,6 +10,7 @@ import com.janioofi.helpdesk.repositories.TecnicoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -22,10 +22,12 @@ public class TecnicoService {
     private final Logger logger = LoggerFactory.getLogger(TecnicoService.class);
     private final TecnicoRepository repository;
     private final PessoaRepository pessoaRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    public TecnicoService(TecnicoRepository repository, PessoaRepository pessoaRepository) {
+    public TecnicoService(TecnicoRepository repository, PessoaRepository pessoaRepository, BCryptPasswordEncoder encoder) {
         this.repository = repository;
         this.pessoaRepository = pessoaRepository;
+        this.encoder = encoder;
     }
 
     public Tecnico findById(Integer id){
@@ -38,6 +40,7 @@ public class TecnicoService {
 
     public Tecnico create(TecnicoDTO data){
         validaEmailECpf(data);
+        data.setSenha(encoder.encode(data.getSenha()));
         Tecnico tecnico = new Tecnico(data);
         return repository.save(tecnico);
     }

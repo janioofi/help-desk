@@ -10,6 +10,7 @@ import com.janioofi.helpdesk.repositories.PessoaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -21,10 +22,12 @@ public class ClienteService {
     private final Logger logger = LoggerFactory.getLogger(ClienteService.class);
     private final ClienteRepository repository;
     private final PessoaRepository pessoaRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    public ClienteService(ClienteRepository repository, PessoaRepository pessoaRepository) {
+    public ClienteService(ClienteRepository repository, PessoaRepository pessoaRepository, BCryptPasswordEncoder encoder) {
         this.repository = repository;
         this.pessoaRepository = pessoaRepository;
+        this.encoder = encoder;
     }
 
     public Cliente findById(Integer id){
@@ -37,6 +40,7 @@ public class ClienteService {
 
     public Cliente create(ClienteDTO data){
         validaEmailECpf(data);
+        data.setSenha(encoder.encode(data.getSenha()));
         Cliente cliente = new Cliente(data);
         return repository.save(cliente);
     }

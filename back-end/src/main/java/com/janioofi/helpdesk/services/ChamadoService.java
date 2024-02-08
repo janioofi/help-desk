@@ -1,7 +1,6 @@
 package com.janioofi.helpdesk.services;
 
 import com.janioofi.helpdesk.domain.dtos.ChamadoDTO;
-import com.janioofi.helpdesk.domain.enums.Perfil;
 import com.janioofi.helpdesk.domain.enums.Prioridade;
 import com.janioofi.helpdesk.domain.enums.Status;
 import com.janioofi.helpdesk.domain.models.Chamado;
@@ -28,8 +27,7 @@ public class ChamadoService {
     }
 
     public Chamado findById(Integer id){
-        Chamado obj = repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Nenhum chamado encontrado com o id: " + id));
-        return obj;
+        return repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Nenhum chamado encontrado com o id: " + id));
     }
 
     public List<ChamadoDTO> findAll(){

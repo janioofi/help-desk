@@ -10,6 +10,7 @@ import com.janioofi.helpdesk.repositories.ChamadoRepository;
 import com.janioofi.helpdesk.repositories.ClienteRepository;
 import com.janioofi.helpdesk.repositories.TecnicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,12 +23,14 @@ public class DBService {
     private ClienteRepository clienteRepository;
     @Autowired
     private ChamadoRepository chamadoRepository;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public void instanciaDB(){
-        Tecnico tecnico = new Tecnico(null,"Jona Silveira", "66232536100", "jonas@gmail.com", "teste");
+        Tecnico tecnico = new Tecnico(null,"Jona Silveira", "66232536100", "jonas@gmail.com", encoder.encode("teste"));
         tecnico.addPerfil(Perfil.ADMIN);
 
-        Cliente cliente = new Cliente(null, "Rubens Nascimento", "63185578147", "rubens@gmail.com", "teste");
+        Cliente cliente = new Cliente(null, "Rubens Nascimento", "63185578147", "rubens@gmail.com", encoder.encode("teste"));
 
         Chamado c1 = new Chamado();
         c1.setCliente(cliente);
