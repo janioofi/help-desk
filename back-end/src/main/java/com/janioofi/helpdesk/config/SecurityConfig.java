@@ -1,13 +1,16 @@
 package com.janioofi.helpdesk.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.janioofi.helpdesk.security.JWTAuthenticationFilter;
+import com.janioofi.helpdesk.security.JWTUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -20,8 +23,15 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
+    private final JWTUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(Environment env, JWTUtil jwtUtil, UserDetailsService userDetailsService) {
+        this.env = env;
+        this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -29,8 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http.headers().frameOptions().disable();
         }
         http.cors().and().csrf().disable();
-        http.authorizeHttpRequests().antMatchers(PUBLIC_MATCHERS).permitAll();
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager(),jwtUtil));
+        http.authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Bean
