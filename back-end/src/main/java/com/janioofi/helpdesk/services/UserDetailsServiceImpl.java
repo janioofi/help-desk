@@ -2,7 +2,7 @@ package com.janioofi.helpdesk.services;
 
 import com.janioofi.helpdesk.domain.models.Pessoa;
 import com.janioofi.helpdesk.exceptions.RecordNotFoundException;
-import com.janioofi.helpdesk.repositories.PessoaRepository;
+import com.janioofi.helpdesk.domain.repositories.PessoaRepository;
 import com.janioofi.helpdesk.security.UserSS;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

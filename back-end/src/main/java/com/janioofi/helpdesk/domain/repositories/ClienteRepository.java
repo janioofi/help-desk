@@ -1,4 +1,4 @@
-package com.janioofi.helpdesk.repositories;
+package com.janioofi.helpdesk.domain.repositories;
 
 import com.janioofi.helpdesk.domain.models.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;

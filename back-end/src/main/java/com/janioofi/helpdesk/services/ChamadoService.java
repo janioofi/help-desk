@@ -7,7 +7,7 @@ import com.janioofi.helpdesk.domain.models.Chamado;
 import com.janioofi.helpdesk.domain.models.Cliente;
 import com.janioofi.helpdesk.domain.models.Tecnico;
 import com.janioofi.helpdesk.exceptions.RecordNotFoundException;
-import com.janioofi.helpdesk.repositories.ChamadoRepository;
+import com.janioofi.helpdesk.domain.repositories.ChamadoRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

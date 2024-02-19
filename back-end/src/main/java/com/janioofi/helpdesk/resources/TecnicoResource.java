@@ -5,6 +5,7 @@ import com.janioofi.helpdesk.domain.models.Tecnico;
 import com.janioofi.helpdesk.services.TecnicoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,6 +32,7 @@ public class TecnicoResource {
         return ResponseEntity.ok().body(service.findAll());
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Tecnico> create(@Valid @RequestBody TecnicoDTO tecnico){
         Tecnico data = service.create(tecnico);
@@ -38,11 +40,13 @@ public class TecnicoResource {
         return ResponseEntity.created(uri).body(data);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Tecnico> update(@PathVariable Integer id, @Valid @RequestBody TecnicoDTO tecnico){
         return ResponseEntity.status(HttpStatus.OK).body(service.update(id, tecnico));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id){
         service.deleteById(id);
