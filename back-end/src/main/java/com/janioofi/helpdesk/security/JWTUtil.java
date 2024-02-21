@@ -10,17 +10,18 @@ import java.util.Date;
 
 @Component
 public class JWTUtil {
+
     @Value("${jwt.expiration}")
     private Long expiration;
 
     @Value("${jwt.secret}")
-    private String secretKey;
+    private String secret;
 
-    public String generateToken(String email){
+    public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS512, secret.getBytes())
                 .compact();
     }
 
@@ -31,7 +32,7 @@ public class JWTUtil {
             Date expirationDate = claims.getExpiration();
             Date now = new Date(System.currentTimeMillis());
 
-            if (username != null && expirationDate != null && now.before(expirationDate)) {
+            if(username != null && expirationDate != null && now.before(expirationDate)) {
                 return true;
             }
         }
@@ -40,15 +41,15 @@ public class JWTUtil {
 
     private Claims getClaims(String token) {
         try {
-            return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token).getBody();
-        }catch (Exception e){
+            return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
+        } catch (Exception e) {
             return null;
         }
     }
 
     public String getUsername(String token) {
         Claims claims = getClaims(token);
-        if(claims != null){
+        if(claims != null) {
             return claims.getSubject();
         }
         return null;
