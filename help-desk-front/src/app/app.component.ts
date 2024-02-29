@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
 // Para trabalhar com formulários
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -31,6 +31,8 @@ import { NavComponent } from './components/nav/nav.component';
   standalone: true,
   imports: [
     RouterOutlet, 
+    RouterLink, 
+    RouterLinkActive, 
     FormsModule, 
     ReactiveFormsModule,
     HttpClientModule,
