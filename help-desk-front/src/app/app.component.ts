@@ -52,7 +52,7 @@ import { NavComponent } from './components/nav/nav.component';
     MatCardModule,
     NavComponent
   ],
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
 })
 export class AppComponent {
   title = 'help-desk-front';
