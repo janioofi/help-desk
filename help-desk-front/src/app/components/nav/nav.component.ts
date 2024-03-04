@@ -4,6 +4,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { Router, RouterOutlet } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-nav',
@@ -13,7 +14,8 @@ import { Router, RouterOutlet } from '@angular/router';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    RouterOutlet
+    RouterOutlet,
+    HeaderComponent
   ],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css'
