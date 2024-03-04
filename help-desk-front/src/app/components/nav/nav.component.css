@@ -5,7 +5,7 @@
 .sidenav{
 	width: 13rem;
 	color: white;
-	background: linear-gradient(350deg, rgba(195,202,228,0.994014793417367) 38%, rgba(77,116,255,1) 100%, rgba(21,44,83,1) 100%);
+	background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(37,97,207,1) 0%, rgba(0,212,255,1) 100%);
 }
 
 .sidenav i {
@@ -19,7 +19,7 @@
 .menu {
 	margin: 1rem 0 0 1rem;
 	color: white;
-	background: linear-gradient(350deg, rgba(195,202,228,0.994014793417367) 38%, rgba(77,116,255,1) 100%, rgba(21,44,83,1) 100%);
+	background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(37,97,207,1) 0%, rgba(0,212,255,1) 100%);
 
 }
 
