@@ -3,6 +3,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -11,16 +12,17 @@ import { MatListModule } from '@angular/material/list';
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    RouterOutlet
   ],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css'
 })
 export class NavComponent implements OnInit {
-  constructor(){}
+  constructor(private router: Router){}
 
   ngOnInit(): void{
-
+    this.router.navigate(['home'])
   }
   showFiller = false;
 }
