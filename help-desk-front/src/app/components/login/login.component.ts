@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Credenciais } from '../../models/credenciais';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -17,9 +18,12 @@ import { Credenciais } from '../../models/credenciais';
     MatButtonModule, 
     MatDividerModule, 
     MatIconModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
+  providers: [
+    {provide: ToastrService, useClass: ToastrService}
+  ]
 })
 export class LoginComponent implements OnInit {
 
@@ -31,20 +35,18 @@ export class LoginComponent implements OnInit {
   email = new FormControl(null, Validators.email);
   senha = new FormControl(null, Validators.minLength(3));
 
-  constructor(){
-
-  }
+  constructor(private toastr: ToastrService) {}
 
   ngOnInit(): void {
-    
+  }
+
+  logar(){
+    this.toastr.error("E-mail e/ou senha inválidos", "Login")
+    this.creds.senha = ''
   }
 
   validaCampos(): boolean{
-    if(this.email.valid && this.senha.valid){
-      return true;
-    }else{
-      return false;
-    }
+    return this.email.valid && this.senha.valid
   }
 
 }
