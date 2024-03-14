@@ -7,6 +7,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Credenciais } from '../../models/credenciais';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
+import { AppModule } from '../../app.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +22,8 @@ import { ToastrService } from 'ngx-toastr';
     MatButtonModule, 
     MatDividerModule, 
     MatIconModule,
-    ReactiveFormsModule,],
+    ReactiveFormsModule,
+    HttpClientModule ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   providers: [
@@ -29,20 +34,27 @@ export class LoginComponent implements OnInit {
 
   creds: Credenciais = {
     email: '',
-    senha: ''
+    password: ''
   }
 
   email = new FormControl(null, Validators.email);
   senha = new FormControl(null, Validators.minLength(3));
 
-  constructor(private toastr: ToastrService) {}
+  constructor(
+    private toastr: ToastrService,
+    private service: AuthService,
+    private router: Router) {}
 
   ngOnInit(): void {
   }
 
   logar(){
-    this.toastr.error("E-mail e/ou senha inválidos", "Login")
-    this.creds.senha = ''
+    this.service.authenticate(this.creds).pipe().subscribe(response => {
+      this.service.successFullLogin(response.headers.get('Authorization').substring(7));
+    this.router.navigate([''])
+    }, ()=> {
+      this.toastr.error("E-mail e/ou senha inválidos")
+    })
   }
 
   validaCampos(): boolean{
@@ -50,3 +62,5 @@ export class LoginComponent implements OnInit {
   }
 
 }
+
+

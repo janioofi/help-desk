@@ -19,6 +19,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppComponent } from './app.component';
 
 
 @NgModule({
@@ -55,6 +56,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       progressBar: true
     })
   ],
-  bootstrap: [AppModule]
+  bootstrap: [AppModule, AppComponent]
 })
 export class AppModule { }

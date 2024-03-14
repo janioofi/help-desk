@@ -3,7 +3,6 @@ package com.janioofi.helpdesk.domain.dtos;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.janioofi.helpdesk.domain.models.Chamado;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class ChamadoDTO {
