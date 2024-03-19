@@ -1,5 +1,5 @@
 export interface Tecnico {
-	id?: any;
+	id_pessoa?: any;
 	nome: string;
 	cpf: string;
 	email: string;
