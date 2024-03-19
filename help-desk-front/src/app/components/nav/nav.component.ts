@@ -4,7 +4,6 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { HeaderComponent } from '../header/header.component';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,7 +17,6 @@ import { ToastrService } from 'ngx-toastr';
     MatListModule,
     RouterOutlet,
     RouterLink,
-    HeaderComponent
   ],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css'
@@ -27,7 +25,7 @@ export class NavComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private toast: ToastrService){}
 
   ngOnInit(): void{
-    this.router.navigate(['home'])
+    this.router.navigate(['tecnicos/create'])
   }
 
   logout(){
