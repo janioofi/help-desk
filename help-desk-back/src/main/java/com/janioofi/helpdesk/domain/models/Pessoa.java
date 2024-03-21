@@ -26,7 +26,7 @@ public abstract class Pessoa implements Serializable {
     @NotEmpty(message = "Campo NOME pode estar em branco")
     protected String nome;
 
-    @CPF
+    @CPF(message = "Número do CPF é Inválido")
     @NotNull(message = "Campo CPF não pode ser nulo")
     @NotEmpty(message = "Campo CPF não pode estar em branco")
     @Column(unique = true)

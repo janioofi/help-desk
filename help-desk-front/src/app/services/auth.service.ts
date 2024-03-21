@@ -13,8 +13,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  authenticate(creds: Credenciais){
-    return this.http.post(`${API_CONFIG.baseUrl}/login`, JSON.stringify(creds), {
+  authenticate(creds: Credenciais) {
+    return this.http.post(`${API_CONFIG.baseUrl}/login`, creds, { 
       observe: 'response',
       responseType: 'text'
     })

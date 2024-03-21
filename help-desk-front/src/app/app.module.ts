@@ -54,7 +54,7 @@ import { AppComponent } from './app.component';
       timeOut: 4000,
       closeButton: true,
       progressBar: true
-    })
+    }),
   ],
   bootstrap: [AppModule, AppComponent]
 })

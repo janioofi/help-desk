@@ -48,12 +48,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  logar(){
-    this.service.authenticate(this.creds).pipe().subscribe(response => {
-      this.service.successFullLogin(response.headers.get('Authorization').substring(7));
-    this.router.navigate([''])
-    }, ()=> {
-      this.toastr.error("E-mail e/ou senha inválidos")
+  logar() {
+    this.service.authenticate(this.creds)
+    this.service.authenticate(this.creds).subscribe(resposta => {
+      this.service.successFullLogin(resposta.headers.get('Authorization').substring(7));
+      this.router.navigate(['']);
+    }, () => {
+      this.toastr.error('E-mail e/ou senha inválidos.');
     })
   }
 
