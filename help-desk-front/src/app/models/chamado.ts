@@ -5,9 +5,9 @@ export interface Chamado {
 	prioridade: string;
 	status: string;
 	titulo: string;
-	descricao: string;
-	tecnico: any;
-	cliente: any;
-	nomeCliente: string;
-	nomeTecnico: string;
+	observacoes: string;
+	id_tecnico: any;
+	id_cliente: any;
+	cliente: string;
+	tecnico: string;
 }
