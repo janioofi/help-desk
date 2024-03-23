@@ -1,8 +1,10 @@
 package com.janioofi.helpdesk.services;
 
 import com.janioofi.helpdesk.domain.dtos.ClienteDTO;
+import com.janioofi.helpdesk.domain.dtos.TecnicoDTO;
 import com.janioofi.helpdesk.domain.enums.Perfil;
 import com.janioofi.helpdesk.domain.models.Cliente;
+import com.janioofi.helpdesk.domain.models.Pessoa;
 import com.janioofi.helpdesk.exceptions.BusinessRuntimeException;
 import com.janioofi.helpdesk.exceptions.RecordNotFoundException;
 import com.janioofi.helpdesk.domain.repositories.ClienteRepository;
@@ -13,13 +15,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
-    private final Logger logger = LoggerFactory.getLogger(ClienteService.class);
     private final ClienteRepository repository;
     private final PessoaRepository pessoaRepository;
     private final BCryptPasswordEncoder encoder;
@@ -39,32 +39,24 @@ public class ClienteService {
     }
 
     public Cliente create(ClienteDTO data){
-        validaEmailECpf(data);
+        validaPorCpfEEmail(data);
         data.setSenha(encoder.encode(data.getSenha()));
         Cliente cliente = new Cliente(data);
         return repository.save(cliente);
     }
 
-    public Cliente update(Integer id, ClienteDTO cliente){
-        Cliente oldObj = findById(id);
-        validaEmailECpf(cliente);
-        if(!(cliente.getEmail() == null) && verificaEmail(cliente)){
-            oldObj.setEmail(cliente.getEmail());
-        }
-        if(!(cliente.getNome() == null)){
-            oldObj.setNome(cliente.getNome());
-        }
-        if(!(cliente.getSenha() == null)){
-            oldObj.setSenha(cliente.getSenha());
-        }
-        if(!cliente.getPerfis().isEmpty()){
-            Set<Perfil> perfis = new HashSet<>();
-            for(Perfil p : cliente.getPerfis()){
-                perfis.add(p);
+    public Cliente update(Integer id, ClienteDTO objDTO){
+        validaPorCpfEEmail(objDTO);
+        return repository.findById(id).map(recordFound -> {
+            recordFound.setNome(objDTO.getNome());
+            if(!objDTO.getSenha().equals(recordFound.getSenha())){
+                recordFound.setSenha(encoder.encode(objDTO.getSenha()));
             }
-            oldObj.setPerfis(perfis);
-        }
-        return repository.save(oldObj);
+            recordFound.setEmail(objDTO.getEmail());
+            recordFound.setDateCriacao(objDTO.getDateCriacao());
+            recordFound.setPerfis(objDTO.getPerfis());
+            return repository.save(recordFound);
+        }).orElseThrow(() -> new RecordNotFoundException("Nenhum cliente encontrado com o id: " + id));
     }
 
     public void deleteById(Integer id){
@@ -75,17 +67,16 @@ public class ClienteService {
         repository.deleteById(id);
     }
 
-    private void validaEmailECpf(ClienteDTO data){
-        if(pessoaRepository.findByCpf(data.getCpf()).isPresent()){
-            throw new BusinessRuntimeException("Já existe um cadastro com esse cpf!");
+    private void validaPorCpfEEmail(ClienteDTO objDTO) {
+        Optional<Pessoa> obj = pessoaRepository.findByCpf(objDTO.getCpf());
+        if (obj.isPresent() && obj.get().getId_pessoa() != objDTO.getId_pessoa()) {
+            throw new DataIntegrityViolationException("CPF já cadastrado no sistema!");
         }
-        if(pessoaRepository.findByEmail(data.getEmail()).isPresent()){
-            throw new BusinessRuntimeException("Já existe um cadastro com esse email!");
-        }
-    }
 
-    private Boolean verificaEmail(ClienteDTO data){
-        return pessoaRepository.findByEmail(data.getEmail()).isEmpty();
+        obj = pessoaRepository.findByEmail(objDTO.getEmail());
+        if (obj.isPresent() && obj.get().getId_pessoa() != objDTO.getId_pessoa()) {
+            throw new DataIntegrityViolationException("E-mail já cadastrado no sistema!");
+        }
     }
 
 }

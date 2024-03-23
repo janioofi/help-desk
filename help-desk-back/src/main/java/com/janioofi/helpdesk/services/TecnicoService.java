@@ -52,7 +52,9 @@ public class TecnicoService {
         validaPorCpfEEmail(objDTO);
         return repository.findById(id).map(recordFound -> {
             recordFound.setNome(objDTO.getNome());
-            recordFound.setSenha(objDTO.getSenha());
+            if(!objDTO.getSenha().equals(recordFound.getSenha())){
+                recordFound.setSenha(encoder.encode(objDTO.getSenha()));
+            }
             recordFound.setEmail(objDTO.getEmail());
             recordFound.setDateCriacao(objDTO.getDateCriacao());
             recordFound.setPerfis(objDTO.getPerfis());

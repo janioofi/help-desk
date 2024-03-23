@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class ClienteDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private Integer id_pessoa;
     protected String nome;
     protected String cpf;
     protected String email;
@@ -92,5 +93,13 @@ public class ClienteDTO implements Serializable {
 
     public void setDateCriacao(LocalDate dateCriacao) {
         this.dateCriacao = dateCriacao;
+    }
+
+    public Integer getId_pessoa() {
+        return id_pessoa;
+    }
+
+    public void setId_pessoa(Integer id_pessoa) {
+        this.id_pessoa = id_pessoa;
     }
 }
