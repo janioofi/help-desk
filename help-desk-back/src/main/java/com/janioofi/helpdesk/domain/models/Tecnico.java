@@ -20,7 +20,7 @@ public class Tecnico extends Pessoa{
 
     public Tecnico() {
         super();
-        addPerfil(Perfil.TECNICO);
+        addPerfil(Perfil.CLIENTE);
     }
 
     public Tecnico(TecnicoDTO obj) {

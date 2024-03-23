@@ -42,9 +42,10 @@ public class TecnicoResource {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<Tecnico> update(@PathVariable Integer id, @Valid @RequestBody TecnicoDTO tecnico){
-        return ResponseEntity.status(HttpStatus.OK).body(service.update(id, tecnico));
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<TecnicoDTO> update(@PathVariable Integer id, @Valid @RequestBody TecnicoDTO objDTO) {
+        Tecnico obj = service.update(id, objDTO);
+        return ResponseEntity.ok().body(new TecnicoDTO(obj));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")

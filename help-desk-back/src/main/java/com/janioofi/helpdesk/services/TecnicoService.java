@@ -2,6 +2,7 @@ package com.janioofi.helpdesk.services;
 
 import com.janioofi.helpdesk.domain.dtos.TecnicoDTO;
 import com.janioofi.helpdesk.domain.enums.Perfil;
+import com.janioofi.helpdesk.domain.models.Pessoa;
 import com.janioofi.helpdesk.domain.models.Tecnico;
 import com.janioofi.helpdesk.exceptions.BusinessRuntimeException;
 import com.janioofi.helpdesk.exceptions.RecordNotFoundException;
@@ -13,8 +14,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -39,32 +42,22 @@ public class TecnicoService {
     }
 
     public Tecnico create(TecnicoDTO data){
-        validaEmailECpf(data);
+        validaPorCpfEEmail(data);
         data.setSenha(encoder.encode(data.getSenha()));
         Tecnico tecnico = new Tecnico(data);
         return repository.save(tecnico);
     }
 
-    public Tecnico update(Integer id, TecnicoDTO tecnico){
-        Tecnico oldObj = findById(id);
-        validaEmailECpf(tecnico);
-        if(!(tecnico.getEmail() == null) && verificaEmail(tecnico)){
-            oldObj.setEmail(tecnico.getEmail());
-        }
-        if(!(tecnico.getNome() == null)){
-            oldObj.setNome(tecnico.getNome());
-        }
-        if(!(tecnico.getSenha() == null)){
-            oldObj.setSenha(tecnico.getSenha());
-        }
-        if(!tecnico.getPerfis().isEmpty()){
-            Set<Perfil> perfis = new HashSet<>();
-            for(Perfil p : tecnico.getPerfis()){
-                perfis.add(p);
-            }
-            oldObj.setPerfis(perfis);
-        }
-        return repository.save(oldObj);
+    public Tecnico update(Integer id, @Valid TecnicoDTO objDTO) {
+        validaPorCpfEEmail(objDTO);
+        return repository.findById(id).map(recordFound -> {
+            recordFound.setNome(objDTO.getNome());
+            recordFound.setSenha(objDTO.getSenha());
+            recordFound.setEmail(objDTO.getEmail());
+            recordFound.setDateCriacao(objDTO.getDateCriacao());
+            recordFound.setPerfis(objDTO.getPerfis());
+            return repository.save(recordFound);
+        }).orElseThrow(() -> new RecordNotFoundException("Nenhum tecnico encontrado com o id: " + id));
     }
 
     public void deleteById(Integer id){
@@ -75,17 +68,16 @@ public class TecnicoService {
         repository.deleteById(id);
     }
 
-    private void validaEmailECpf(TecnicoDTO data){
-        if(pessoaRepository.findByCpf(data.getCpf()).isPresent()){
-            throw new BusinessRuntimeException("Já existe um cadastro com esse cpf!");
+    private void validaPorCpfEEmail(TecnicoDTO objDTO) {
+        Optional<Pessoa> obj = pessoaRepository.findByCpf(objDTO.getCpf());
+        if (obj.isPresent() && obj.get().getId_pessoa() != objDTO.getId_pessoa()) {
+            throw new DataIntegrityViolationException("CPF já cadastrado no sistema!");
         }
-        if(pessoaRepository.findByEmail(data.getEmail()).isPresent()){
-            throw new BusinessRuntimeException("Já existe um cadastro com esse email!");
-        }
-    }
 
-    private Boolean verificaEmail(TecnicoDTO data){
-        return pessoaRepository.findByEmail(data.getEmail()).isEmpty();
+        obj = pessoaRepository.findByEmail(objDTO.getEmail());
+        if (obj.isPresent() && obj.get().getId_pessoa() != objDTO.getId_pessoa()) {
+            throw new DataIntegrityViolationException("E-mail já cadastrado no sistema!");
+        }
     }
 
 }
