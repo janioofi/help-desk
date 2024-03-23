@@ -38,7 +38,7 @@ export class TecnicoUpdateComponent implements OnInit {
     senha: "",
     perfis: [],
     dataCriacao: "",
-};
+  };
 
 nome: FormControl = new FormControl(null, Validators.minLength(3));
 cpf: FormControl = new FormControl(null, [Validators.required]);
