@@ -1,6 +1,5 @@
 package com.janioofi.helpdesk.services;
 
-import com.fasterxml.jackson.databind.util.ArrayIterator;
 import com.janioofi.helpdesk.domain.models.Chamado;
 import com.janioofi.helpdesk.domain.models.Cliente;
 import com.janioofi.helpdesk.domain.models.Tecnico;
@@ -15,9 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-
 @Service
 public class DBService {
     @Autowired
