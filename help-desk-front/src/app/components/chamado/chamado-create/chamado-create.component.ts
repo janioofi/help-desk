@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,10 +19,22 @@ import { RouterLink } from '@angular/router';
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
-    RouterLink],
+    RouterLink,
+    ReactiveFormsModule],
   templateUrl: './chamado-create.component.html',
   styleUrl: './chamado-create.component.css'
 })
 export class ChamadoCreateComponent {
 
+  prioridade: FormControl = new FormControl(null, Validators.required)
+  status: FormControl = new FormControl(null, Validators.required)
+  titulo: FormControl = new FormControl(null, Validators.required)
+  observacoes: FormControl = new FormControl(null, Validators.required)
+  tecnico: FormControl = new FormControl(null, Validators.required)
+  cliente: FormControl = new FormControl(null, Validators.required)
+  
+  validaCampos(): boolean{
+    return this.prioridade.valid && this.status.valid && this.titulo.valid && this.observacoes.valid && this.tecnico.valid && this.cliente.valid;
+  }
+  
 }
