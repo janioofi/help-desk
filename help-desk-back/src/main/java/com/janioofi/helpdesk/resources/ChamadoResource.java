@@ -22,7 +22,7 @@ public class ChamadoResource {
         this.service = service;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(params = "/{id}")
     public ResponseEntity<Chamado> findById(@PathVariable Integer id){
         return ResponseEntity.ok().body(service.findById(id));
     }
