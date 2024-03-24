@@ -32,8 +32,25 @@ h1{
 	color: red;
 }
 
-mat-radio-group{
+.filtros{
 	display: flex;
-	justify-content: flex-end;
-	margin-bottom: 1rem;
+	justify-content: space-between;
+}
+
+.filtro{
+	width: 40%;
+}
+
+.enums{
+	width: 100%;
+}
+
+.status{
+	width: 20%;
+	margin-left: 1rem;
+}
+
+.prioridade{
+	width: 15%;
+	margin-left: 1rem;
 }

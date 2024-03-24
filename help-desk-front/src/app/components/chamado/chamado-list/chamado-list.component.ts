@@ -13,6 +13,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { ChamadoService } from '../../../services/chamado.service';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-chamado-list',
@@ -29,7 +30,8 @@ import { ChamadoService } from '../../../services/chamado.service';
     MatCardModule, 
     MatCheckboxModule, 
     FormsModule, 
-    MatRadioModule],
+    MatRadioModule,
+    MatSelectModule],
   templateUrl: './chamado-list.component.html',
   styleUrl: './chamado-list.component.css'
 })
@@ -62,6 +64,17 @@ export class ChamadoListComponent implements OnInit {
     let list: Chamado[] = []
     this.ELEMENT_DATA.forEach(element => {
       if(element.status == status)
+        list.push(element)
+    })
+    this.FILTERED_DATA = list;
+    this.dataSource = new MatTableDataSource<Chamado>(list)
+    this.dataSource.paginator = this.paginator;
+  }
+
+  orderByPrioridade(prioridade: any): void{
+    let list: Chamado[] = []
+    this.ELEMENT_DATA.forEach(element => {
+      if(element.prioridade == prioridade)
         list.push(element)
     })
     this.FILTERED_DATA = list;
