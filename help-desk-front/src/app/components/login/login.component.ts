@@ -49,7 +49,6 @@ export class LoginComponent implements OnInit {
   }
 
   logar() {
-    this.service.authenticate(this.creds)
     this.service.authenticate(this.creds).subscribe(resposta => {
       this.service.successFullLogin(resposta.headers.get('Authorization').substring(7));
       this.router.navigate(['']);
