@@ -26,8 +26,9 @@ public class ChamadoService {
         this.clienteService = clienteService;
     }
 
-    public Chamado findById(Integer id){
-        return repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Nenhum chamado encontrado com o id: " + id));
+    public ChamadoDTO findById(Integer id){
+        ChamadoDTO chamado =  new ChamadoDTO(repository.findById(id).orElseThrow(() -> new RecordNotFoundException("Nenhum chamado encontrado com o id: " + id)));
+        return chamado;
     }
 
     public List<ChamadoDTO> findAll(){
@@ -43,6 +44,7 @@ public class ChamadoService {
         objDTO.setId_chamado(id);
         Chamado oldObj;
         oldObj = newChamado(objDTO);
+        oldObj.setDataAbertura(objDTO.getDataAbertura());
         return repository.save(oldObj);
     }
 

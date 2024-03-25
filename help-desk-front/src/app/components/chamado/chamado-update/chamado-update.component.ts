@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Cliente } from '../../../models/cliente';
 import { Tecnico } from '../../../models/tecnico';
 import { ChamadoService } from '../../../services/chamado.service';
@@ -61,17 +61,28 @@ export class ChamadoUpdateComponent {
     private clienteService: ClienteService, 
     private toastr: ToastrService,
     private tecnicoService: TecnicoService,
-    private router: Router)
+    private router: Router,
+    private route: ActivatedRoute)
   {}
 
   ngOnInit(): void {
+    this.chamado.id_chamado = this.route.snapshot.paramMap.get('id');
+    this.findById();
     this.findAllClientes();
     this.findAllTecnicos();
   }
+
+  findById(): void{
+    this.chamadoService.findById(this.chamado.id_chamado).subscribe(response => {
+      this.chamado = response;
+    }, ex => {
+      this.toastr.error(ex.error.error)
+    })
+  }
   
-  create(): void{
-    this.chamadoService.crete(this.chamado).subscribe(reponse => {
-      this.toastr.success("Chamado criado com sucesso", "Criação")
+  update(): void{
+    this.chamadoService.update(this.chamado).subscribe(reponse => {
+      this.toastr.success("Chamado atualizado com sucesso", "Atualização")
       this.router.navigate(['chamados'])
     }, ex => {
       this.toastr.error(ex.error.error)

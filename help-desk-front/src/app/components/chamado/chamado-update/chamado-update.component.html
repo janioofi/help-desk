@@ -31,7 +31,7 @@
 		
 		<div class="tecnico">
 			<mat-form-field class="full-width" appearance="outline">
-				<mat-label>Selecione um técnico</mat-label>
+				<mat-label>{{chamado.tecnico}}</mat-label>
 				<mat-select [(ngModel)]="chamado.id_tecnico" name="tecnico" [formControl]="tecnico" required>
 				  <mat-option *ngFor="let cli of tecnicos" value="{{cli.id_pessoa}}">{{ cli.nome }}</mat-option>
 				</mat-select>
@@ -40,7 +40,7 @@
 
 		<div class="cliente">
 			<mat-form-field class="full-width" appearance="outline">
-				<mat-label>Selecione um cliente</mat-label>
+				<mat-label>{{chamado.cliente}}</mat-label>
 				<mat-select [(ngModel)]="chamado.id_cliente" name="cliente" [formControl]="cliente" required>
 				  <mat-option *ngFor="let cli of clientes" value="{{ cli.id_pessoa }}"> {{cli.nome}} </mat-option>
 				</mat-select>
@@ -53,7 +53,7 @@
 		</mat-form-field>
 	</form>
 	<div class="button">
-		<button [disabled]="!validaCampos()" (click)="create()" class="mat-elevation-z4" mat-raised-button color="primary">Atualizar</button>
+		<button [disabled]="!validaCampos()" (click)="update()" class="mat-elevation-z4" mat-raised-button color="primary">Atualizar</button>
 		<button routerLink="../../" class="mat-elevation-z4" mat-stroked-button color="warn">Cancelar</button>
 	</div>
 </div>
