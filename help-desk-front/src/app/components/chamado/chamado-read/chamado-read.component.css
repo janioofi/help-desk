@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+
+.container{
+	width: 45%;
+	margin: auto;
+	padding: 1rem;
+	border-radius: 1rem;
+}
+
+.full-width{
+	width: 100%;
+}
+
+h1, img{
+	text-align: center;
+	font-family: 'Roboto Slab';
+}
+
+img{
+	height: 15rem;
+}
+
+.status-prioridade-data{
+	display: flex;
+	justify-content: space-between;
+}
+
+.status-prioridade-data mat-form-field{
+	width: 49%;
+}
+
+.descricao{
+	min-height: 6rem;
+	max-height: 10rem;
+}
+
+.button{
+	display: flex;
+	justify-content: center;
+}
+
+.button button{
+	width: 49%;
+}
